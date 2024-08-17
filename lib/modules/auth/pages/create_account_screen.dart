@@ -121,7 +121,7 @@ class CreateAccountScreen extends StatelessWidget {
                           ),
                         ],
                       ),
-                      const Spacer(),
+                       Spacer(),
                       TextButton(
                           onPressed: () {
                             Navigator.pushReplacementNamed(
