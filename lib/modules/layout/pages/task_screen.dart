@@ -82,21 +82,22 @@ class TaskScreen extends StatelessWidget {
 
                   showTimelineHeader: false,
 
-                  onDateChange: provider.setTime,
+                  onDateChange: provider.setDate,
                 ),
               ],
             ),
             const SizedBox(
               height: 60,
             ),
-            FutureBuilder(
-              future: provider.getTask(),
+            StreamBuilder(
+              stream: provider.getTask(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(
                     child: CircularProgressIndicator(),
                   );
                 } else if (snapshot.hasError) {
+                  print(snapshot.error);
                   return const Center(
                     child: Text("has Error"),
                   );

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todo_4pm/modules/auth/pages/login_screen.dart';
 import 'package:todo_4pm/modules/layout/layout.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -15,7 +16,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     Future.delayed(const Duration(seconds: 5), () {
       Navigator.pushNamedAndRemoveUntil(
-          context, LayoutScreen.routeName, (route) => false);
+          context, LoginScreen.routeName, (route) => false);
     });
     super.initState();
   }

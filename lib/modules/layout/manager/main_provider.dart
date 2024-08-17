@@ -9,6 +9,7 @@ class MainProvider extends ChangeNotifier {
   int selectedIndex = 0;
   DateTime selectedTime = DateTime.now();
   DateTime selectedTimeTask = DateTime.now();
+  TimeOfDay timeOfDay = TimeOfDay.now();
   List<Widget> screens = [TaskScreen(), SettingsScreen()];
   List<String> title = ["Tasks", "Settings"];
 
@@ -20,8 +21,12 @@ class MainProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setTime(DateTime time) {
+  void setDate(DateTime time) {
     selectedTime = time;
+    notifyListeners();
+  }
+  void setTime(TimeOfDay time) {
+    timeOfDay = time;
     notifyListeners();
   }
 
@@ -33,22 +38,28 @@ class MainProvider extends ChangeNotifier {
   void addTask() async {
     TaskModel task = TaskModel(
         title: titleController.text,
-        time: selectedTimeTask.millisecondsSinceEpoch,
+        date: DateUtils.dateOnly(selectedTimeTask).millisecondsSinceEpoch,
         desc: descController.text,
+        time: "${timeOfDay.hour} : ${timeOfDay.minute}",
         isDone: false);
     await FireBaseFunctions.addTask(task);
     titleController.clear();
     descController.clear();
-    notifyListeners();
+    // notifyListeners();
   }
 
-  Future<QuerySnapshot<TaskModel?>> getTask() async {
-    tasks = await FireBaseFunctions.getTask();
-    return tasks!;
+  Stream<QuerySnapshot<TaskModel?>> getTask() {
+    return FireBaseFunctions.getTask(DateUtils.dateOnly(selectedTime).millisecondsSinceEpoch) ;
+
   }
 
   void deleteTask(String id)async{
     await FireBaseFunctions.deleteTask(id);
-    notifyListeners();
+    // notifyListeners();
+  }
+
+  void setDone(TaskModel model)async{
+   await FireBaseFunctions.setDone(model);
+   // notifyListeners();
   }
 }

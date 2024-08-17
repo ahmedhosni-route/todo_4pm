@@ -6,7 +6,7 @@ import 'package:todo_4pm/modules/layout/manager/main_provider.dart';
 
 class TaskWidget extends StatelessWidget {
   TaskModel task;
-   TaskWidget({
+  TaskWidget({
     required this.task,
     super.key,
   });
@@ -18,12 +18,11 @@ class TaskWidget extends StatelessWidget {
         return Padding(
           padding: const EdgeInsets.all(8.0),
           child: Slidable(
-            key: const ValueKey(0),
+            key: ValueKey(task.id),
             startActionPane: ActionPane(
               motion: const ScrollMotion(),
               dismissible: DismissiblePane(onDismissed: () {
                 provider.deleteTask(task.id);
-
               }),
               children: [
                 SlidableAction(
@@ -38,8 +37,7 @@ class TaskWidget extends StatelessWidget {
                 ),
                 SlidableAction(
                   borderRadius: BorderRadius.circular(10),
-                  onPressed: (context) {
-                  },
+                  onPressed: (context) {},
                   backgroundColor: const Color(0xFF21B7CA),
                   foregroundColor: Colors.white,
                   icon: Icons.edit,
@@ -47,7 +45,6 @@ class TaskWidget extends StatelessWidget {
                 ),
               ],
             ),
-
             child: Container(
               padding: const EdgeInsets.all(15),
               height: 120,
@@ -61,7 +58,7 @@ class TaskWidget extends StatelessWidget {
                     width: 4,
                     height: 60,
                     decoration: BoxDecoration(
-                        color: Colors.blue,
+                        color: task.isDone ? Colors.green : Colors.blue,
                         borderRadius: BorderRadius.circular(15)),
                   ),
                   const SizedBox(
@@ -72,33 +69,54 @@ class TaskWidget extends StatelessWidget {
                     children: [
                       Text(
                         task.title,
-                        style: const TextStyle(fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 25,
+                            color: task.isDone ? Colors.green : Colors.blue),
                       ),
                       const SizedBox(
                         height: 10,
                       ),
                       Text(task.desc),
                       const Spacer(),
-                      const Row(
+                      Row(
                         children: [
-                          Icon(Icons.timelapse),
-                          Text("19:00"),
+                          const Icon(Icons.timelapse),
+                          Text(task.time),
                         ],
                       )
                     ],
                   ),
                   const Spacer(),
-                  Container(
-                    width: 50,
-                    height: 30,
-                    decoration: BoxDecoration(
-                        color: Colors.blue,
-                        borderRadius: BorderRadius.circular(8)),
-                    child: const Icon(
-                      Icons.check,
-                      color: Colors.white,
-                    ),
-                  )
+                  task.isDone
+                      ? InkWell(
+                          onTap: () {
+                            provider.setDone(task);
+                          },
+                          child: const Text(
+                            "Done..!",
+                            style: TextStyle(
+                                color: Colors.green,
+                                fontSize: 25,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        )
+                      : InkWell(
+                          onTap: () {
+                            provider.setDone(task);
+                          },
+                          child: Container(
+                            width: 50,
+                            height: 30,
+                            decoration: BoxDecoration(
+                                color: Colors.blue,
+                                borderRadius: BorderRadius.circular(8)),
+                            child: const Icon(
+                              Icons.check,
+                              color: Colors.white,
+                            ),
+                          ),
+                        )
                 ],
               ),
             ),

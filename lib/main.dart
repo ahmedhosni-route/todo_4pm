@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:todo_4pm/core/theme/app_theme.dart';
+import 'package:todo_4pm/modules/auth/pages/create_account_screen.dart';
+import 'package:todo_4pm/modules/auth/pages/login_screen.dart';
 import 'package:todo_4pm/modules/layout/layout.dart';
 import 'package:todo_4pm/modules/splash/splash_screen.dart';
 
@@ -12,8 +14,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  FirebaseFirestore.instance.disableNetwork();
-
+  // FirebaseFirestore.instance.disableNetwork();
 
   runApp(const MyApp());
 }
@@ -30,6 +31,8 @@ class MyApp extends StatelessWidget {
       routes: {
         SplashScreen.routeName: (_) => SplashScreen(),
         LayoutScreen.routeName: (_) => LayoutScreen(),
+        CreateAccountScreen.routeName: (_) => CreateAccountScreen(),
+        LoginScreen.routeName: (_) => LoginScreen(),
       },
       initialRoute: SplashScreen.routeName,
     );
