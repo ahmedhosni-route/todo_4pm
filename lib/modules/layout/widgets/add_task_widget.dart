@@ -36,7 +36,6 @@ class AddTaskWidget extends StatelessWidget {
               ),
               TextField(
                 controller: provider.descController,
-
                 decoration: InputDecoration(
                     hintText: "Description",
                     enabledBorder: OutlineInputBorder(
@@ -68,11 +67,30 @@ class AddTaskWidget extends StatelessWidget {
                   },
                   child: Text(
                       provider.selectedTimeTask.toString().substring(0, 10))),
+              const SizedBox(
+                height: 10,
+              ),
+              const Text("Select Time"),
+              const SizedBox(
+                height: 10,
+              ),
+              GestureDetector(
+                  onTap: () {
+                    showTimePicker(
+                            context: context, initialTime: provider.timeOfDay)
+                        .then((value) {
+                      provider.setTime(value!);
+                    });
+                  },
+                  child: Text(
+                      "${provider.timeOfDay.hour} : ${provider.timeOfDay.minute}")),
               const Spacer(),
-              ElevatedButton(onPressed: () {
-                provider.addTask();
-                Navigator.pop(context);
-              }, child: const Text("Add Task"))
+              ElevatedButton(
+                  onPressed: () {
+                    provider.addTask();
+                    Navigator.pop(context);
+                  },
+                  child: const Text("Add Task"))
             ],
           ),
         );
