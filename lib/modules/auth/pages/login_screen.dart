@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_4pm/modules/auth/manager/auth_provider.dart';
 import 'package:todo_4pm/modules/auth/pages/create_account_screen.dart';
+import 'package:todo_4pm/modules/layout/layout.dart';
 
 class LoginScreen extends StatelessWidget {
   static const String routeName = "loginScreen";
@@ -11,6 +12,7 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
+    Size size = MediaQuery.of(context).size;
     return ChangeNotifierProvider(
       create: (context) => AuthProvider(),
       child: Container(
@@ -40,8 +42,8 @@ class LoginScreen extends StatelessWidget {
                             fontWeight: FontWeight.bold,
                             color: Colors.blue),
                       ),
-                      const SizedBox(
-                        height: 30,
+                      SizedBox(
+                        height: size.height * 0.1,
                       ),
                       TextFormField(
                         controller: provider.emailController,
@@ -54,8 +56,8 @@ class LoginScreen extends StatelessWidget {
                               borderSide: const BorderSide(color: Colors.blue),
                             )),
                       ),
-                      const SizedBox(
-                        height: 15,
+                      SizedBox(
+                        height: size.height * 0.02,
                       ),
                       TextFormField(
                         controller: provider.passwordController,
@@ -76,19 +78,40 @@ class LoginScreen extends StatelessWidget {
                               borderSide: const BorderSide(color: Colors.blue),
                             )),
                       ),
-                      const SizedBox(
-                        height: 15,
+                      SizedBox(
+                        height: size.height * 0.02,
                       ),
                       Row(
                         children: [
                           Expanded(
-                            child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(),
-                                onPressed: () {
-                                  provider.login();
-                                },
-                                child: const Text("Login")),
-                          ),
+                              child: InkWell(
+                            onTap: () async {
+                              await provider.login(context);
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.all(18),
+                              decoration: BoxDecoration(
+                                  color: Colors.blue,
+                                  borderRadius: BorderRadius.circular(15)),
+                              child: const Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    "Login",
+                                    style: TextStyle(
+                                        fontSize: 20,
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  Icon(
+                                    Icons.login,
+                                    color: Colors.white,
+                                  )
+                                ],
+                              ),
+                            ),
+                          )),
                         ],
                       ),
                       const Spacer(),

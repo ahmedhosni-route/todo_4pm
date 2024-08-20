@@ -10,7 +10,7 @@ class LayoutScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => MainProvider(),
+      create: (context) => MainProvider()..getUser(),
       child: Selector<MainProvider, int>(
         selector: (p0, p1) => p1.selectedIndex,
         builder: (context, selectedIndex, child) {

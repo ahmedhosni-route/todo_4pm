@@ -2,8 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:todo_4pm/core/models/task_model.dart';
 import 'package:todo_4pm/core/service/firebase_functions.dart';
+import 'package:todo_4pm/modules/auth/pages/login_screen.dart';
 import 'package:todo_4pm/modules/layout/pages/settings_screen.dart';
 import 'package:todo_4pm/modules/layout/pages/task_screen.dart';
+
+import '../../../core/models/user_model.dart';
 
 class MainProvider extends ChangeNotifier {
   int selectedIndex = 0;
@@ -12,7 +15,7 @@ class MainProvider extends ChangeNotifier {
   TimeOfDay timeOfDay = TimeOfDay.now();
   List<Widget> screens = [TaskScreen(), SettingsScreen()];
   List<String> title = ["Tasks", "Settings"];
-
+  UserModel? user;
   TextEditingController titleController = TextEditingController();
   TextEditingController descController = TextEditingController();
   QuerySnapshot<TaskModel?>? tasks;
@@ -25,6 +28,7 @@ class MainProvider extends ChangeNotifier {
     selectedTime = time;
     notifyListeners();
   }
+
   void setTime(TimeOfDay time) {
     timeOfDay = time;
     notifyListeners();
@@ -49,17 +53,28 @@ class MainProvider extends ChangeNotifier {
   }
 
   Stream<QuerySnapshot<TaskModel?>> getTask() {
-    return FireBaseFunctions.getTask(DateUtils.dateOnly(selectedTime).millisecondsSinceEpoch) ;
-
+    return FireBaseFunctions.getTask(
+        DateUtils.dateOnly(selectedTime).millisecondsSinceEpoch);
   }
 
-  void deleteTask(String id)async{
+  void deleteTask(String id) async {
     await FireBaseFunctions.deleteTask(id);
     // notifyListeners();
   }
 
-  void setDone(TaskModel model)async{
-   await FireBaseFunctions.setDone(model);
-   // notifyListeners();
+  void setDone(TaskModel model) async {
+    await FireBaseFunctions.setDone(model);
+    // notifyListeners();
+  }
+
+  void getUser() async {
+    user = await FireBaseFunctions.getUser();
+    notifyListeners();
+  }
+
+  void logout(BuildContext context) {
+    FireBaseFunctions.logout();
+    Navigator.pushNamedAndRemoveUntil(
+        context, LoginScreen.routeName, (route) => false);
   }
 }

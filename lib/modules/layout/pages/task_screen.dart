@@ -29,18 +29,18 @@ class TaskScreen extends StatelessWidget {
                   decoration: const BoxDecoration(
                     color: Colors.blue,
                   ),
-                  child: const Column(
+                  child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Row(
                         children: [
-                          SizedBox(
+                          const SizedBox(
                             width: 50,
                           ),
                           Text(
-                            "To Do List",
-                            style: TextStyle(
+                            "Hi , ${provider.user?.name.toUpperCase() ?? ""}",
+                            style: const TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 24,
                                 color: Colors.white),
